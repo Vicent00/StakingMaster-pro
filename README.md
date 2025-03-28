@@ -6,10 +6,10 @@
 
 ## Tabla de Contenidos 📚
 
-- [Características](#características)
+- [Características](#caracteristicas)
 - [Arquitectura](#arquitectura)
 - [Requisitos](#requisitos)
-- [Instalación](#instalación)
+- [Instalación](#instalacion)
 - [Uso](#uso)
 - [Testing](#testing)
 - [Contribuciones](#contribuciones)
@@ -18,6 +18,7 @@
 
 ---
 
+<a name="caracteristicas"></a>
 ## Características ✨
 
 - **Múltiples Opciones de Lock:**  
@@ -37,108 +38,116 @@
 
 ---
 
+<a name="arquitectura"></a>
 ## Arquitectura 🏗️
 
 El proyecto se compone de dos contratos principales:
 
 1. **MyToken.sol:**  
-   Un token ERC20 con capacidad de mint restringida al administrador. Se utiliza tanto para el staking como para el pago de recompensas. 💎
+   Un token ERC20 con capacidad de mint restringida al administrador. Este token se utiliza tanto para el staking como para el pago de recompensas.
 
 2. **StakingContract.sol:**  
-   Gestiona el staking de tokens. Permite a los usuarios depositar tokens, elegir entre tres opciones de lock (30, 60 y 90 días), calcular recompensas basadas en una APR global y aplicar penalizaciones en caso de retiro anticipado. 🔄💰
+   Contrato inteligente que gestiona el staking de tokens. Permite a los usuarios depositar tokens, elegir entre tres opciones de lock (30, 60 y 90 días), calcular recompensas basadas en una APR global y aplicar penalizaciones sobre las recompensas si se retira antes de tiempo.
 
 
 ---
 
-## Requisitos ✅
+<a name="requisitos"></a>
+## Requisitos
 
 - **Solidity:** v0.8.19 o superior.
 - **Foundry:** Para compilar y testear los contratos inteligentes.
-- **Node.js y npm (opcional):** Útiles para herramientas auxiliares o scripts.
+- **Node.js y npm (opcional):** Si se desea utilizar herramientas auxiliares o scripts adicionales.
 - **Herramientas de línea de comandos:** Como Git y un editor de código (por ejemplo, VSCode).
 
 ---
 
-## Instalación 🛠️
+<a name="instalacion"></a>
+## Instalación
 
 ### Contratos Inteligentes
 
-1. **Instala Foundry** (si aún no lo has hecho) 🔥.
-2. **Clona el repositorio** desde GitHub 📥.
-3. **Compila los contratos** utilizando Foundry. ⚙️
+1. **Instala Foundry** (si aún no lo has hecho).
 
-> **Nota:** Actualmente, este proyecto se centra únicamente en el backend (contratos inteligentes) sin interfaz de usuario. ¡Pero la magia ya está en tus manos! ✨
+2. **Clona el repositorio** desde GitHub.
+
+3. **Compila los contratos** utilizando Foundry.
+
+> **Nota:** Actualmente, este proyecto se centra únicamente en el backend (contratos inteligentes) sin interfaz de usuario.
 
 ---
 
-## Uso 🚀
+<a name="uso"></a>
+## Uso
 
-StakeMaster Pro te permite interactuar directamente con los contratos inteligentes a través de Remix, scripts de línea de comandos o cualquier otra herramienta que te conecte a la blockchain.
+StakeMaster Pro permite interactuar directamente con los contratos inteligentes a través de herramientas como Remix, scripts de línea de comandos o cualquier otra herramienta que permita realizar llamadas a la blockchain.
 
 ### Funcionalidades Principales
 
 - **Stake:**  
-  Deposita tus tokens ERC20 usando la función `stake`, especificando el monto y el índice de lock (por ejemplo, 0 para 30 días, 1 para 60 días o 2 para 90 días).  
-  **Importante:** Antes de stakear, debes aprobar que el contrato transfiera tus tokens. ✅
+  Los usuarios pueden stakear tokens ERC20 mediante la función de `stake`, donde se especifica el monto y el índice de lock elegido (por ejemplo, 0 para 30 días, 1 para 60 días o 2 para 90 días).  
+  **Importante:** Antes de stakear, el usuario debe aprobar que el contrato pueda transferir sus tokens.
 
 - **Cálculo de Recompensas:**  
-  La función de recompensas pendientes calcula de forma lineal las ganancias basadas en la APR y el tiempo transcurrido. ¡Gana mientras esperas! 💸📈
+  La función de recompensas pendientes calcula de forma lineal las recompensas acumuladas basadas en la APR y el tiempo transcurrido desde el inicio del stake.
 
 - **Tiempo Restante para Lock:**  
-  Consulta la cantidad de segundos que faltan para completar el período de bloqueo. ⏲️
+  La función que indica el tiempo restante devuelve la cantidad de segundos que faltan para cumplir el período de bloqueo seleccionado.
 
 - **Unstake:**  
-  Retira tus tokens con la función `unstake`. Si lo haces antes de que termine el lock, se aplicará la penalización correspondiente sobre las recompensas generadas. ⚠️💔
+  La función de `unstake` permite a los usuarios retirar sus tokens. Si el retiro se realiza antes de que termine el lock, se aplica la penalización correspondiente sobre las recompensas generadas.
 
 - **Actualización de Parámetros (Admin):**  
-  El administrador puede actualizar la APR y la penalización mediante funciones específicas. 🔧👑
+  El administrador, a través de funciones específicas, puede actualizar la APR y la penalización.
 
 ### Ejemplo de Interacción
 
 1. **Aprobar y Stakear:**
-   - Llama a la función de aprobación en el token ERC20 para permitir que el contrato de staking transfiera tus tokens. 🔓
-   - Luego, llama a la función `stake` para depositar los tokens en el contrato de staking. 🚀
+   - Llama a la función de aprobación en el token ERC20 para permitir que el contrato de staking transfiera los tokens.
+   - Llama a la función de `stake` para depositar los tokens en el contrato de staking.
 
 2. **Consultar Datos:**
-   - Usa las funciones de recompensas pendientes y tiempo restante para ver la información de tu staking. 👀
+   - Llama a las funciones de recompensas pendientes y tiempo restante para ver la información del staking.
 
 3. **Unstake:**
-   - Llama a la función `unstake` para retirar el principal junto con las recompensas netas (¡recuerda la penalización si es anticipado!). 🏦
+   - Al llamar a la función de `unstake`, se retira el principal junto con las recompensas netas, aplicándose la penalización en caso de retiro anticipado.
 
 ---
 
-## Testing 🧪
+<a name="testing"></a>
+## Testing
 
-- Se han desarrollado tests unitarios y de integración utilizando Foundry para garantizar el correcto funcionamiento de todas las funcionalidades del contrato.
-- Ejecuta los tests con el comando correspondiente de Foundry.
-- ¡Obtén reportes detallados de gas y logs usando las opciones de alta verbosidad de Foundry! 🔍📊
+- Se han desarrollado tests unitarios y de integración utilizando Foundry para asegurar el correcto funcionamiento de todas las funcionalidades del contrato.
+- Para ejecutar los tests, se utiliza el comando de Foundry correspondiente.
+- Es posible obtener un reporte detallado de gas y logs utilizando las opciones de alta verbosidad de Foundry.
 
 ---
 
-## Contribuciones 🤝
+<a name="contribuciones"></a>
+## Contribuciones
 
-¡Las contribuciones son más que bienvenidas! Si deseas mejorar StakeMaster Pro o agregar nuevas funcionalidades, sigue estos pasos:
+Las contribuciones son bienvenidas. Para mejorar StakeMaster Pro o agregar nuevas funcionalidades, sigue estos pasos:
 
-1. **Haz un fork** del repositorio.
+1. **Haz un fork** de este repositorio.
 2. **Crea una rama** para tu feature.
 3. **Realiza los cambios** y envía un pull request explicando las modificaciones.
 
-¡Juntos haremos que este proyecto brille! 💫
+---
+
+<a name="licencia"></a>
+## Licencia
+
+Este proyecto se distribuye bajo la Licencia MIT.
 
 ---
 
-## Licencia 📜
-
-Este proyecto se distribuye bajo la **Licencia MIT**. ¡Comparte y colabora libremente! 👐
-
----
-
-## Contacto 📞
+<a name="contacto"></a>
+## Contacto
 
 - **Autor:** Vicent00
-- **Email:** [tuemail@ejemplo.com](mailto:info@vicenteaguilar.com)
+- **Email:** [info@vicenteaguilar.com](mailto:infol@vicenteaguilar.com)
 
-¡Gracias por explorar StakeMaster Pro! Si tienes alguna duda o sugerencia, no dudes en contactarnos. ¡Estamos aquí para ayudarte a crecer en el mundo DeFi! 🚀💥
+
 
 
 
