@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity 0.8.26;
 
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "../../lib/openzeppelin-contracts/contracts/access/AccessControl.sol";
@@ -9,7 +9,7 @@ import "../../lib/openzeppelin-contracts/contracts/access/AccessControl.sol";
  * @title MyToken
  * @dev ERC20 token con capacidad de mint restringida al ADMIN_ROLE
  */
-contract MyToken is ERC20, AccessControl {
+contract StakingToken is ERC20, AccessControl {
     // Definimos una constante para el rol de administrador
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 

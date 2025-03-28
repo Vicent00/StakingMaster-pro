@@ -9,6 +9,7 @@ lib/
 
 # Docs
 docs/
-
+test/
+script/
 # Dotenv file
 .env

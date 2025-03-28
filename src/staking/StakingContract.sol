@@ -59,10 +59,11 @@ contract StakingContract is AccessControl {
         address _stakingToken,
         uint256[] memory _lockOptions,
         uint256 _initialApr,
-        uint256 _initialPenaltyFee
+        uint256 _initialPenaltyFee,
+        address _owner
     ) {
         // Configuramos roles
-        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, _owner);
         _setRoleAdmin(ADMIN_ROLE, ADMIN_ROLE);
 
         // Seteamos las variables de configuración inicial
@@ -106,7 +107,7 @@ contract StakingContract is AccessControl {
      *         - Tiempo transcurrido desde startTimestamp
      * @dev    No aplica penalización aquí; la penalización se descuenta en `unstake()`
      */
-    function pendingRewards(address _user) public view returns (uint256) {
+    function pendingRewards(address _user) public view onlyRole(ADMIN_ROLE) returns(uint256) {
         UserInfo memory user = userInfo[_user];
 
         // Si no tiene nada staked, retorna 0
@@ -136,7 +137,7 @@ contract StakingContract is AccessControl {
      * @notice Devuelve cuántos segundos faltan para que venza el lock 
      *         (si el usuario eligió 30, 60 o 90 días).
      */
-    function timeLeft(address _user) external view returns (uint256) {
+    function timeLeft(address _user) external view  onlyRole(ADMIN_ROLE) returns (uint256) {
         UserInfo memory user = userInfo[_user];
 
         // Si no tiene nada staked, consideramos 0
@@ -158,7 +159,7 @@ contract StakingContract is AccessControl {
      * @notice Unstake total de los tokens. Calcula y transfiere las recompensas.
      *         Aplica penalización sobre las recompensas si no se cumplió el lock.
      */
-    function unstake() external {
+    function unstake() external onlyRole(ADMIN_ROLE) {
         UserInfo storage user = userInfo[msg.sender];
         uint256 staked = user.amountStaked;
 
